@@ -1,32 +1,23 @@
 name: Access Issue Information
 on:
-  push:
   issues:
-    types: [opened, closed]
+    types: [opened, reopened]  # Triggers on issue "opened" and "reopened" events
 
 jobs:
-  say_hello:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Greeting Message
-        run: echo "Hello, world!"
-
   access_issue_info:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Set Issue Variables
-        run : |
+        run: |
           echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
           echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
           echo "ISSUE_BODY=${{ github.event.issue.body }}" >> $GITHUB_ENV
-          echo "ISSUE_ASSIGNEES=${{ github.event.issue.assignees }}" >> $GITHUB_ENV
-          echo "ISSUE_LABELS=${{ github.event.issue.labels }}" >> $GITHUB_ENV
+          echo "ISSUE_ASSIGNEES=${{ github.event.issue.assignees && join(github.event.issue.assignees.*.login, ', ') || 'None' }}" >> $GITHUB_ENV
+          echo "ISSUE_LABELS=${{ github.event.issue.labels && join(github.event.issue.labels.*.name, ', ') || 'None' }}" >> $GITHUB_ENV
 
       - name: Echo Issue Details
         run: |
