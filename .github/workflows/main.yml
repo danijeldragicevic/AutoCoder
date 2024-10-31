@@ -11,24 +11,16 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set Issue Variables
-        run: |
-          echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
-          echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
-          echo "ISSUE_BODY=${{ github.event.issue.body }}" >> $GITHUB_ENV
-          echo "ISSUE_ASSIGNEES=${{ github.event.issue.assignees && join(github.event.issue.assignees.*.login, ', ') || 'None' }}" >> $GITHUB_ENV
-          echo "ISSUE_LABELS=${{ github.event.issue.labels && join(github.event.issue.labels.*.name, ', ') || 'None' }}" >> $GITHUB_ENV
-
-      - name: Echo Issue Details
+      - name: Print Issue Information
         env:
-          ISSUE_NUMBER: ${{ env.ISSUE_NUMBER }}
-          ISSUE_TITLE: ${{ env.ISSUE_TITLE }}
-          ISSUE_BODY: ${{ env.ISSUE_BODY }}
-          ISSUE_ASSIGNEES: ${{ env.ISSUE_ASSIGNEES }}
-          ISSUE_LABELS: ${{ env.ISSUE_LABELS }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_ASSIGNEES: ${{ github.event.issue.assignees && join(github.event.issue.assignees.*.login, ', ') || 'None' }}
+          ISSUE_LABELS: ${{ github.event.issue.labels && join(github.event.issue.labels.*.name, ', ') || 'None' }}
         run: |
-          echo "Issue Number: $ISSUE_NUMBER"
-          echo "Issue Title: $ISSUE_TITLE"
-          echo "Issue Body: $ISSUE_BODY"
-          echo "Issue Assignees: $ISSUE_ASSIGNEES"
-          echo "Issue Labels: $ISSUE_LABELS"
+          echo "Issue Number: ${ISSUE_NUMBER}"
+          echo "Issue Title: ${ISSUE_TITLE}"
+          echo "Issue Body: ${ISSUE_BODY}"
+          echo "Issue Assignees: ${ISSUE_ASSIGNEES}"
+          echo "Issue Labels: ${ISSUE_LABELS}"
