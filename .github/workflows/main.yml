@@ -20,6 +20,12 @@ jobs:
           echo "ISSUE_LABELS=${{ github.event.issue.labels && join(github.event.issue.labels.*.name, ', ') || 'None' }}" >> $GITHUB_ENV
 
       - name: Echo Issue Details
+        env:
+          ISSUE_NUMBER: ${{ env.ISSUE_NUMBER }}
+          ISSUE_TITLE: ${{ env.ISSUE_TITLE }}
+          ISSUE_BODY: ${{ env.ISSUE_BODY }}
+          ISSUE_ASSIGNEES: ${{ env.ISSUE_ASSIGNEES }}
+          ISSUE_LABELS: ${{ env.ISSUE_LABELS }}
         run: |
           echo "Issue Number: $ISSUE_NUMBER"
           echo "Issue Title: $ISSUE_TITLE"
