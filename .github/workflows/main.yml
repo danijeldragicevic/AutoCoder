@@ -1,6 +1,8 @@
-name: Workflow Name
+name: Access Issue Information
 on:
   push:
+  issues:
+    types: [opened, closed]
 
 jobs:
   say_hello:
@@ -11,3 +13,25 @@ jobs:
 
       - name: Greeting Message
         run: echo "Hello, world!"
+
+  access_issue_info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set Issue Variables
+        run : |
+          echo "ISSUE_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
+          echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
+          echo "ISSUE_BODY=${{ github.event.issue.body }}" >> $GITHUB_ENV
+          echo "ISSUE_ASSIGNEES=${{ github.event.issue.assignees }}" >> $GITHUB_ENV
+          echo "ISSUE_LABELS=${{ github.event.issue.labels }}" >> $GITHUB_ENV
+
+      - name: Echo Issue Details
+        run: |
+          echo "Issue Number: $ISSUE_NUMBER"
+          echo "Issue Title: $ISSUE_TITLE"
+          echo "Issue Body: $ISSUE_BODY"
+          echo "Issue Assignees: $ISSUE_ASSIGNEES"
+          echo "Issue Labels: $ISSUE_LABELS"
